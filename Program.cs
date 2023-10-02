@@ -72,7 +72,8 @@ for (int i = 0; i < trackingFileRows.Length; i++)
     {
         Title = seriesInfo[0],
         NumberOfBooks = int.Parse(seriesInfo[1]),
-        KindleStoreUrl = seriesInfo[2]
+        KindleStoreUrl = seriesInfo[2],
+        NewTitles = false
     };
 
     trackingSeries.Add(series);
@@ -108,38 +109,59 @@ if (newSeries.Count != 0)
 
 //TODO: refactor this because it's ugly and I'm sure I can do better!
 //compare the new book totals with the previous book totals 
-bool newTitles = false;
 for (int t = 0; t < trackingSeries.Count; t++)
 {
     for (int c = 0;  c < currentSeries.Count;  c++)
     {
         if (trackingSeries[t].Title == currentSeries[c].Title)
         {
-            int previousNumber = trackingSeries[t].NumberOfBooks;
-            int currentNumber = currentSeries[c].NumberOfBooks;
-
-            if (previousNumber < currentNumber)
+            if (trackingSeries[t].NumberOfBooks < currentSeries[c].NumberOfBooks)
             {
-                newTitles = true;
-                int newBooks = currentNumber - previousNumber;
-                
-                if (newBooks == 1)
+                currentSeries[c].NewTitles = true;
+
+                int newBooksCount = trackingSeries[t].NumberOfBooks - currentSeries[c].NumberOfBooks;
+
+                if (newBooksCount == 1)
                 {
-                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooks} new book!");
+                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new book!");
                 }
                 else
                 {
-                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooks} new books!");
+                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new books!");
                 }
             }
         }
     }
 }
 
+//check for new titles 
+bool newTitles = false;
+for (int i = 0; i < currentSeries.Count; i++)
+{
+    if (currentSeries[i].NewTitles == true)
+    {
+        newTitles = true;
+    }
+}
+
 if (!newTitles)
 {
     Console.WriteLine("There are no new books :(");
+    Environment.Exit(0);
 }
 
-//TODO: ask the user if they want to update their tracking data
+//TODO: ask the user if they want to update their tracking data before doing it 
+string[] currentSeriesToAdd = ConvertSeriesInfoListToCsvRowArray(currentSeries);
+File.WriteAllLines(trackingDataFile, currentSeriesToAdd);
 
+
+string[] ConvertSeriesInfoListToCsvRowArray(List<SeriesInfo> seriesInfos)
+{
+    string[] csvRows = new string[seriesInfos.Count];
+    for (int i = 0; i < csvRows.Length; i++)
+    {
+        csvRows[i] = $"{seriesInfos[i].Title},{seriesInfos[i].NumberOfBooks},{seriesInfos[i].KindleStoreUrl}";
+    }
+
+    return csvRows;
+}

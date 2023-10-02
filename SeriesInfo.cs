@@ -5,5 +5,6 @@ namespace kindlewatcher
         public string? Title { get; set; }
         public int NumberOfBooks { get; set; }
         public string? KindleStoreUrl { get; set; }
+        public bool NewTitles { get; set; }
     }
 }
