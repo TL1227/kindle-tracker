@@ -3,8 +3,10 @@
 string seriesToTrackFile = "SeriesToTrack.txt";
 if (!File.Exists(seriesToTrackFile))
 {
-    Console.WriteLine($"{seriesToTrackFile} does not exist.");
-    Console.WriteLine($"Please create it and try again.");
+    Console.WriteLine($"Creating {seriesToTrackFile}");
+    Console.WriteLine($"Add the urls of any kindle series you want to track");
+    Console.WriteLine($"For example, to track DragonBall add the below url");
+    Console.WriteLine($"https://www.amazon.co.jp/DRAGON-BALL-%E3%83%A2%E3%83%8E%E3%82%AF%E3%83%AD%E7%89%88-1-%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E3%82%B3%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9DIGITAL-ebook/dp/B00A47VS5A");
     Environment.Exit(0);
 }
 
@@ -12,7 +14,8 @@ string[] seriesToTrackUrls = File.ReadAllLines(seriesToTrackFile);
 if (seriesToTrackUrls.Length == 0)
 {
     Console.WriteLine($"{seriesToTrackFile} does not contain any urls to track.");
-    Console.WriteLine($"You can add URLs manually or by using the 'kindle add' command");
+    //TODO: Add the kindle add command
+    //Console.WriteLine($"You can add URLs manually or by using the 'kindle add' command");
     Environment.Exit(0);
 }
 
