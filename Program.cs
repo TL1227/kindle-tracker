@@ -123,7 +123,7 @@ for (int t = 0; t < trackingSeries.Count; t++)
             {
                 currentSeries[c].NewTitles = true;
 
-                int newBooksCount = trackingSeries[t].NumberOfBooks - currentSeries[c].NumberOfBooks;
+                int newBooksCount = currentSeries[c].NumberOfBooks - trackingSeries[t].NumberOfBooks; 
 
                 if (newBooksCount == 1)
                 {
