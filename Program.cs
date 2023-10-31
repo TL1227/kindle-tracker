@@ -3,11 +3,12 @@
 string seriesToTrackFile = "SeriesToTrack.txt";
 if (!File.Exists(seriesToTrackFile))
 {
-    Console.WriteLine($"Creating {seriesToTrackFile}");
-    //TODO: add the logic to create the seriesToTrackFile
+    File.Create(seriesToTrackFile);
+    Console.WriteLine($"Created {seriesToTrackFile}");
     Console.WriteLine($"Add the urls of any kindle series you want to track");
-    Console.WriteLine($"For example, to track DragonBall add the below url");
+    Console.WriteLine($"For example, to track DragonBall add the following");
     Console.WriteLine($"https://www.amazon.co.jp/DRAGON-BALL-%E3%83%A2%E3%83%8E%E3%82%AF%E3%83%AD%E7%89%88-1-%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E3%82%B3%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9DIGITAL-ebook/dp/B00A47VS5A");
+    Console.WriteLine($"Run the program again when you've added some urls");
     Environment.Exit(0);
 }
 
@@ -52,6 +53,7 @@ string trackingDataFile = "TrackingData.txt";
 if (!File.Exists(trackingDataFile))
 {
     Console.WriteLine("Creating initial tracking data");
+    Console.WriteLine("Tracking data created");
 
     string[] initialTrackingData = new string[currentSeries.Count];
     for (int i = 0; i < currentSeries.Count; i++)
@@ -61,7 +63,6 @@ if (!File.Exists(trackingDataFile))
     }
     File.WriteAllLines(trackingDataFile, initialTrackingData);
 
-    Console.WriteLine("Tracking data created");
     Console.WriteLine("Run the program again to check for changes in tracked series");
     Environment.Exit(0);
 }
@@ -88,14 +89,16 @@ for (int i = 0; i < trackingFileRows.Length; i++)
 List<string> trackingSeriesTitles =  new List<string>();
 foreach (var row in trackingSeries)
 {
-    trackingSeriesTitles.Add(row.Title);
+    if (row.Title != null)
+        trackingSeriesTitles.Add(row.Title);
 }
 List<SeriesInfo> newSeries = new List<SeriesInfo>();
 foreach (var series in currentSeries)
 {
-    if (!trackingSeriesTitles.Contains(series.Title))
+    if (series.Title != null)
     {
-        newSeries.Add(series);
+        if (!trackingSeriesTitles.Contains(series.Title))
+            newSeries.Add(series);
     }
 }
 
