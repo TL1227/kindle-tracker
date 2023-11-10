@@ -1,27 +1,28 @@
-﻿using kindlewatcher;
+﻿using static System.Console;
+using kindlewatcher;
 
 string seriesToTrackFile = "SeriesToTrack.txt";
 if (!File.Exists(seriesToTrackFile))
 {
     File.Create(seriesToTrackFile);
-    Console.WriteLine($"Created {seriesToTrackFile}");
-    Console.WriteLine($"Add the urls of any kindle series you want to track");
-    Console.WriteLine($"For example, to track DragonBall add the following");
-    Console.WriteLine($"https://www.amazon.co.jp/DRAGON-BALL-%E3%83%A2%E3%83%8E%E3%82%AF%E3%83%AD%E7%89%88-1-%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E3%82%B3%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9DIGITAL-ebook/dp/B00A47VS5A");
-    Console.WriteLine($"Run the program again when you've added some urls");
+    WriteLine($"Created {seriesToTrackFile}");
+    WriteLine($"Add the urls of any kindle series you want to track");
+    WriteLine($"For example, to track DragonBall add the following");
+    WriteLine($"https://www.amazon.co.jp/DRAGON-BALL-%E3%83%A2%E3%83%8E%E3%82%AF%E3%83%AD%E7%89%88-1-%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E3%82%B3%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9DIGITAL-ebook/dp/B00A47VS5A");
+    WriteLine($"Run the program again when you've added some urls");
     Environment.Exit(0);
 }
 
 string[] seriesToTrackUrls = File.ReadAllLines(seriesToTrackFile);
 if (seriesToTrackUrls.Length == 0)
 {
-    Console.WriteLine($"{seriesToTrackFile} does not contain any urls to track.");
+    WriteLine($"{seriesToTrackFile} does not contain any urls to track.");
     //TODO: Add the kindle add command
     //Console.WriteLine($"You can add URLs manually or by using the 'kindle add' command");
     Environment.Exit(0);
 }
 
-Console.WriteLine("Getting series info from the kindle store");
+WriteLine("Getting series info from the kindle store");
 List<SeriesInfo> currentSeries = new List<SeriesInfo>();
 for (int i = 0; i < seriesToTrackUrls.Length; i++)
 {
@@ -45,25 +46,25 @@ for (int i = 0; i < seriesToTrackUrls.Length; i++)
         };
 
         currentSeries.Add(seriesInfo);
-        Console.WriteLine($"({i + 1}/{seriesToTrackUrls.Length}) {seriesInfo.Title}");
+        WriteLine($"({i + 1}/{seriesToTrackUrls.Length}) {seriesInfo.Title}");
     }
 }
 
 string trackingDataFile = "TrackingData.txt";
 if (!File.Exists(trackingDataFile))
 {
-    Console.WriteLine("Creating initial tracking data");
-    Console.WriteLine("Tracking data created");
+    WriteLine("Creating initial tracking data");
+    WriteLine("Tracking data created");
 
     string[] initialTrackingData = new string[currentSeries.Count];
     for (int i = 0; i < currentSeries.Count; i++)
     {
         initialTrackingData[i] = $"{currentSeries[i].Title}, {currentSeries[i].NumberOfBooks}, {currentSeries[i].KindleStoreUrl}";
-        Console.WriteLine($"{currentSeries[i].Title} added to tracking data");
+        WriteLine($"{currentSeries[i].Title} added to tracking data");
     }
     File.WriteAllLines(trackingDataFile, initialTrackingData);
 
-    Console.WriteLine("Run the program again to check for changes in tracked series");
+    WriteLine("Run the program again to check for changes in tracked series");
     Environment.Exit(0);
 }
 
@@ -109,7 +110,7 @@ if (newSeries.Count != 0)
     for (int i = 0; i < newSeries.Count; i++)
     {
         newSeriesToAdd[i] = $"{newSeries[i].Title}, {newSeries[i].NumberOfBooks}, {newSeries[i].KindleStoreUrl}";
-        Console.WriteLine($"{newSeries[i].Title} {newSeries[i].NumberOfBooks} added to tracking data");
+        WriteLine($"{newSeries[i].Title} {newSeries[i].NumberOfBooks} added to tracking data");
     }
     File.AppendAllLines(trackingDataFile, newSeriesToAdd);
 }
@@ -130,11 +131,11 @@ for (int t = 0; t < trackingSeries.Count; t++)
 
                 if (newBooksCount == 1)
                 {
-                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new book!");
+                    WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new book!");
                 }
                 else
                 {
-                    Console.WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new books!");
+                    WriteLine($"{trackingSeries[t].Title} has {newBooksCount} new books!");
                 }
             }
         }
@@ -153,7 +154,7 @@ for (int i = 0; i < currentSeries.Count; i++)
 
 if (!newTitles)
 {
-    Console.WriteLine("There are no new books :(");
+    WriteLine("There are no new books :(");
     Environment.Exit(0);
 }
 
