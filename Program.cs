@@ -14,11 +14,10 @@ if (!File.Exists(seriesToTrackFile))
 }
 
 string[] seriesToTrackUrls = File.ReadAllLines(seriesToTrackFile);
+
 if (seriesToTrackUrls.Length == 0)
 {
     WriteLine($"{seriesToTrackFile} does not contain any urls to track.");
-    //TODO: Add the kindle add command
-    //Console.WriteLine($"You can add URLs manually or by using the 'kindle add' command");
     Environment.Exit(0);
 }
 
@@ -28,9 +27,9 @@ for (int i = 0; i < seriesToTrackUrls.Length; i++)
 {
     using(HttpClient client = new HttpClient())
     {
-        HttpResponseMessage response = await client.GetAsync(seriesToTrackUrls[i]);
+        HttpResponseMessage response = client.GetAsync(seriesToTrackUrls[i]).Result;
         response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
+        string responseBody = response.Content.ReadAsStringAsync().Result;
         response.Dispose();
 
         string[] bookTotalSplit = responseBody.Split("第 1 巻");
